@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+ï»¿using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 
 namespace Tigrao_Delivery
@@ -10,7 +10,7 @@ namespace Tigrao_Delivery
             InitializeComponent();
         }
 
-        private void btnEntrar_Click(object sender, EventArgs e)
+        private void btnCadastrar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -18,28 +18,23 @@ namespace Tigrao_Delivery
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT COUNT(*) FROM usuarios WHERE Usuario = @usuario AND Senha = @senha";
+
+                    string query = "INSERT INTO funcionarios (Usuario, Senha, Email) VALUES (@usuario, @senha, @email)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
+
                     cmd.Parameters.AddWithValue("@usuario", txtUsuario.Text);
                     cmd.Parameters.AddWithValue("@senha", txtSenha.Text);
+                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
 
-                    int count = (int)cmd.ExecuteScalar();
+                    //cmd.ExecuteNonQuery();
 
-                    if (count > 0)
-                    {
-                        MessageBox.Show("Login realizado com sucesso!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Usuário ou senha inválidos.");
-                    }
+                    MessageBox.Show("Cadastro realizado com sucesso!");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao conectar: " + ex.Message);
+                MessageBox.Show("Erro ao cadastrar: " + ex.Message);
             }
         }
-
     }
 }
